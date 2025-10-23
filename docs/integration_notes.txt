@@ -1,0 +1,28 @@
+# Integration Notes – HR RL Feedback System
+
+Objective:
+Integrate local RL automation logic with Shashank's HR Platform.
+
+Modules Overview:
+- agents/rl_agent.py → Handles Reinforcement Learning feedback updates.
+- agents/decision_engine.py → Automates candidate-job decisions.
+- agents/matching_engine.py → Matches candidate skills with job descriptions.
+- feedback/feedback_log.csv → Stores real-time user feedback.
+- models/ → Pre-trained sentiment & text vectorization models.
+
+Integration Plan:
+1. Expose REST endpoints for automation triggers (Flask/FastAPI).
+2. Connect `post_feedback()` from Shashank’s platform to `rl_agent.update()`.
+3. Log all user interactions to `/feedback/feedback_log.csv` for traceability.
+
+Testing Flow:
+User Action → Automation Trigger (agents) → RL Update → Feedback Logged → Confirmation
+
+# Core Automation System (Replaces N8N)
+
+This module handles internal event-driven automation logic.
+Each user action triggers a backend function (`agents/automation.py`)
+that logs the event in `/feedback/system_log.json`.
+
+Example Workflow:
+User Action → trigger_event() → RL Update (rl_agent.py) → Log → Notification
