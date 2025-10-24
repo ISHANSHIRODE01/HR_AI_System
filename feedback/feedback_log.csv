@@ -5,3 +5,4 @@ candidate_id,jd_id,feedback_score,comment,feedback_summary,policy_action
 1,1,4,Test feedback,Gemini client not initialized.,accept
 1,1,4,Test feedback,Gemini client not initialized.,accept
 1,1,4,Test feedback,Processed feedback with score 4,accept
+1,1,4,Test feedback,Processed feedback with score 4,accept

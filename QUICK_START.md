@@ -1,64 +1,56 @@
 # Quick Start Guide - HR AI System
 
-## \ud83d\ude80 **Start the System (2 Steps)**
+## 🚀 **Get Running in 5 Minutes**
 
-### **Step 1: Start Flask Backend**
+### **Prerequisites**
+- Python 3.8+ installed
+- Git installed
+- Terminal/Command prompt
+
+### **Step 1: Download & Setup (2 minutes)**
 ```bash
+# Clone repository
+git clone https://github.com/ISHANSHIRODE01/Ishan_HR_AI_System.git
+cd Ishan_HR_AI_System
+
+# Automated setup (Windows)
+setup_venv.bat
+
+# Automated setup (Linux/macOS)
+chmod +x setup_venv.sh && ./setup_venv.sh
+```
+
+### **Step 2: Verify Installation (1 minute)**
+```bash
+# Test system (should show 6/6 tests passed)
+python tests/simple_test.py
+```
+
+### **Step 3: Start System (2 minutes)**
+```bash
+# Terminal 1: Start Flask Backend
 python src/app.py
-```
-**Expected Output:**
-```
-RL Agent initialized successfully.
-Gemini Client Error: Missing key inputs argument! [NORMAL - IGNORE THIS]
-* Running on http://127.0.0.1:5000
-```
 
-### **Step 2: Start Dashboard (New Terminal)**
-```bash
+# Terminal 2: Start Dashboard
 streamlit run src/dashboard.py
 ```
-**Expected Output:**
-```
-Local URL: http://localhost:8501
-# OR if port busy:
-Local URL: http://localhost:8503
-```
 
-## \u2705 **System Ready!**
+### **Step 4: Access System**
 - **API**: http://localhost:5000
-- **Dashboard**: http://localhost:8501 or 8503
+- **Dashboard**: http://localhost:8501
 
-## \u274c **Common Mistakes**
+## ✅ **Success Indicators**
+- Flask shows: "Running on http://127.0.0.1:5000"
+- Dashboard opens in browser
+- Tests show: "6/6 tests passed"
 
-### **Wrong Commands (Will Fail):**
+## 🔧 **If Something Goes Wrong**
 ```bash
-python app.py                    # \u274c File not found
-python dashboard.py              # \u274c File not found
+# Most common fix: Activate virtual environment
+venv\Scripts\activate     # Windows
+source venv/bin/activate  # Linux/macOS
+
+# Then retry the commands
 ```
 
-### **Correct Commands:**
-```bash
-python src/app.py                # \u2705 Works
-streamlit run src/dashboard.py   # \u2705 Works
-```
-
-## \ud83d\udcdd **Test the System**
-
-### **API Test:**
-```bash
-curl http://localhost:5000/
-```
-
-### **Submit Feedback:**
-```bash
-curl -X POST http://localhost:5000/update_feedback \
-  -H "Content-Type: application/json" \
-  -d '{"candidate_id":1,"jd_id":1,"feedback_score":4,"comment":"Great candidate"}'
-```
-
-## \u26a0\ufe0f **Expected Warnings (Normal)**
-- **Gemini Client Error** - System works without API key
-- **Port 8503** - Streamlit auto-switches if 8501 busy
-- **Plotly warnings** - Dashboard still works perfectly
-
-**Your system is working correctly!**
+**Need detailed help?** See [INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md)
