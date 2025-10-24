@@ -14,5 +14,5 @@ def trigger_event(event_name, user_id, details=None):
     os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
     with open(LOG_PATH, "a") as f:
         f.write(json.dumps(event) + "\n")
-    print(f"⚡ Event Logged: {event_name} by User {user_id}")
+    print(f"Event Logged: {event_name} by User {user_id}")
     return event

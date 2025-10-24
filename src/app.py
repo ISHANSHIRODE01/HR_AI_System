@@ -12,6 +12,10 @@ from google import genai
 from google.genai.errors import APIError
 
 # --- RL Agent Import ---
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from agents.rl_agent import RLAgent  # your RL class
 
 # --- Internal Automation Import ---
@@ -28,17 +32,17 @@ SYSTEM_LOG_PATH = "feedback/system_log.json"
 # --- Initialize RL Agent ---
 try:
     AGENT = RLAgent(CVS_PATH, JDS_PATH)
-    print("✅ RL Agent initialized successfully.")
+    print("RL Agent initialized successfully.")
 except FileNotFoundError as e:
-    print(f"❌ Data error: {e}")
+    print(f"Data error: {e}")
     AGENT = None
 
 # --- Initialize Gemini Client ---
 try:
     GEMINI_CLIENT = genai.Client()
-    print("✅ Gemini Client initialized successfully.")
+    print("Gemini Client initialized successfully.")
 except Exception as e:
-    print(f"⚠️ Gemini Client Error: {e}")
+    print(f"Gemini Client Error: {e}")
     GEMINI_CLIENT = None
 
 
@@ -69,7 +73,7 @@ def summarize_feedback_with_gemini(candidate_id, jd_id, comment, feedback_score)
         )
         return (resp.text or "No summary").strip()
     except (APIError, Exception) as e:
-        return f"⚠️ Gemini Error: {e}"
+        return f"Gemini Error: {e}"
 
 
 # -----------------------------------------------------------
@@ -86,7 +90,7 @@ def internal_automation(candidate_id, jd_id, feedback_score, comment, summary, a
         "action": action,
     }
     trigger_event("feedback_processed", user_id=candidate_id, details=details)
-    print(f"📢 Automation Triggered → Candidate {candidate_id}, Policy: {action}")
+    print(f"Automation Triggered - Candidate {candidate_id}, Policy: {action}")
 
 
 # -----------------------------------------------------------
@@ -94,7 +98,7 @@ def internal_automation(candidate_id, jd_id, feedback_score, comment, summary, a
 # -----------------------------------------------------------
 @app.route("/")
 def home():
-    return "✅ HR RL Agent Backend Running (Self-Automation Enabled)"
+    return "HR RL Agent Backend Running (Self-Automation Enabled)"
 
 
 @app.route("/update_feedback", methods=["POST"])
@@ -142,7 +146,7 @@ def update_feedback():
         else:
             df.to_csv(FEEDBACK_LOG_PATH, mode="a", header=False, index=False)
     except Exception as e:
-        print(f"⚠️ CSV log error: {e}")
+        print(f"CSV log error: {e}")
 
     # --- Internal Automation Trigger (replaces N8N) ---
     internal_automation(
