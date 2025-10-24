@@ -94,7 +94,7 @@ if AGENT and AGENT.history:
             title="Agent Learning Progress (Cumulative Reward)",
             labels={'index': 'Feedback Entry', 'cumulative_reward': 'Cumulative Reward'}
         )
-        st.plotly_chart(fig_reward, width='stretch')
+        st.plotly_chart(fig_reward, use_container_width=True, config={'displayModeBar': False})
 
     # Feedback Sentiment Distribution
     with chart_col2:
@@ -110,7 +110,7 @@ if AGENT and AGENT.history:
             color='Sentiment',
             color_discrete_map={'Negative': 'red', 'Neutral': 'orange', 'Positive': 'green'}
         )
-        st.plotly_chart(fig_sentiment, width='stretch')
+        st.plotly_chart(fig_sentiment, use_container_width=True, config={'displayModeBar': False})
 
     # =========================
     # 3️⃣ Policy & Feedback Logs
@@ -124,7 +124,7 @@ if AGENT and AGENT.history:
         columns=['Q(accept)', 'Q(reject)', 'Q(reconsider)'],
         index=[f"State {most_freq_state}"]
     ).T.rename(columns={0: "Q-Value"})
-    st.dataframe(q_df.style.background_gradient(cmap='RdYlGn'), width='stretch')
+    st.dataframe(q_df.style.background_gradient(cmap='RdYlGn'), use_container_width=True)
 
     # Latest 10 feedback logs
     st.subheader("Latest 10 Feedback Logs")

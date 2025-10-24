@@ -32,10 +32,12 @@ echo ========================================
 echo.
 echo Starting Flask Backend on port 5000...
 echo You can access the API at: http://localhost:5000
-echo API Documentation: http://localhost:5000 (basic endpoint)
 echo.
-echo To start the Streamlit Dashboard, open a new terminal and run:
+echo IMPORTANT: To start the Dashboard, open a NEW terminal and run:
 echo streamlit run src\dashboard.py
+echo.
+echo Expected: Dashboard will open on port 8501 or 8503
+echo Expected: Gemini API warning is NORMAL and can be ignored
 echo.
 echo Press Ctrl+C to stop the Flask server
 echo.

@@ -75,8 +75,31 @@ scripts/start_dashboard.bat
 
 ### 3. Access Points
 - **Flask API**: http://localhost:5000
-- **Streamlit Dashboard**: http://localhost:8501
+- **Streamlit Dashboard**: http://localhost:8501 (may auto-switch to 8503)
 - **API Health Check**: http://localhost:5000/
+
+**Note**: If port 8501 is busy, Streamlit will automatically use 8503
+
+### 4. Usage Notes
+- **Correct Command**: Use `python src/app.py` (not `python app.py`)
+- **Gemini API Warning**: The Gemini Client error is expected and doesn't affect functionality
+- **Dashboard Port**: Streamlit may use port 8503 if 8501 is occupied
+
+## ⚠️ **Important: Common Mistakes**
+
+### ❌ **Wrong Commands**
+```bash
+# DON'T use these (will fail):
+python app.py
+python dashboard.py
+```
+
+### ✅ **Correct Commands**
+```bash
+# USE these instead:
+python src/app.py
+streamlit run src/dashboard.py
+```
 
 ---
 
@@ -376,6 +399,11 @@ python -c "import pandas as pd; print(pd.read_csv('feedback/cvs.csv').columns)"
 - Fixed in current version
 - All Unicode characters removed from print statements
 
+#### 5. **Gemini API Warnings**
+- Expected warning: "Missing key inputs argument" - this is normal
+- System works without Gemini API key
+- To use Gemini features, set `GOOGLE_AI_API_KEY` environment variable
+
 ### Verification Checklist
 - [ ] Python 3.8+ installed
 - [ ] Virtual environment activated
@@ -507,9 +535,10 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ### Quick Links
 - [Installation Guide](#-quick-start)
+- [Quick Start Guide](QUICK_START.md)
+- [Troubleshooting Guide](TROUBLESHOOTING.md)
 - [API Reference](#-api-reference)
 - [Testing Guide](#-testing--verification)
-- [Troubleshooting](#-troubleshooting)
 - [Test Report](docs/TEST_REPORT.md)
 
 ---
