@@ -74,7 +74,27 @@ cd Ishan_HR_AI_System
 3. Extract to desired location
 4. Open terminal in extracted folder
 
-### Step 3: Set Up Virtual Environment
+### Step 3: Configure Environment Variables (Optional)
+
+**🔐 Important**: Never commit API keys to version control!
+
+```bash
+# Copy environment template
+cp .env.example .env
+
+# Edit with your API keys (this file is git-ignored)
+# Windows: notepad .env
+# Linux/macOS: nano .env
+```
+
+**Add your API key to .env:**
+```env
+GOOGLE_AI_API_KEY=your_actual_api_key_here
+```
+
+**📝 Note**: System works without API key (Gemini features disabled)
+
+### Step 4: Set Up Virtual Environment
 
 **🎯 Why Virtual Environment?**
 - Isolates project dependencies
@@ -120,7 +140,7 @@ where python    # Windows
 which python    # Linux/macOS
 ```
 
-### Step 4: Verify Installation
+### Step 5: Verify Installation
 
 **Run System Tests:**
 ```bash
@@ -145,7 +165,7 @@ python tests/test_flask_only.py
 python tests/test_dashboard.py
 ```
 
-### Step 5: Start the System
+### Step 6: Start the System
 
 **🚨 IMPORTANT: Always activate virtual environment first!**
 ```bash
@@ -181,7 +201,7 @@ python src/app.py
 streamlit run src/dashboard.py
 ```
 
-### Step 6: Access the System
+### Step 7: Access the System
 
 **🌐 Web Interfaces:**
 - **Flask API**: http://localhost:5000
@@ -194,7 +214,7 @@ streamlit run src/dashboard.py
 - No import errors in terminal
 - Both interfaces accessible in browser
 
-### Step 7: Test the System
+### Step 8: Test the System
 
 **API Health Check:**
 ```bash
@@ -508,11 +528,22 @@ Ensure these CSV files exist in the `feedback/` directory:
   ```
 
 ### Environment Variables (Optional)
-Copy `.env.example` to `.env` and configure:
 
+**🔐 Security Note**: Never commit API keys to git!
+
+**Setup:**
+```bash
+# Copy template (safe to commit)
+cp .env.example .env
+
+# Edit .env with your actual keys (git-ignored)
+nano .env
+```
+
+**Example .env file:**
 ```env
 # For Gemini AI integration (optional)
-GOOGLE_AI_API_KEY=your_api_key_here
+GOOGLE_AI_API_KEY=your_actual_api_key_here
 
 # Flask settings
 FLASK_ENV=development
@@ -522,11 +553,7 @@ FLASK_DEBUG=True
 STREAMLIT_SERVER_PORT=8501
 ```
 
-**Setup:**
-```bash
-cp .env.example .env
-# Edit .env with your settings
-```
+**🛡️ Security**: See [SECURITY.md](SECURITY.md) for security guidelines
 
 ---
 
@@ -768,6 +795,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 **📊 Technical Documentation:**
 - [🔌 API Documentation](docs/API_DOCUMENTATION.md) - Complete API reference
 - [🚀 Deployment Guide](docs/DEPLOYMENT_GUIDE.md) - Production deployment
+- [🛡️ Security Guidelines](SECURITY.md) - Security best practices
 - [📊 Test Report](docs/TEST_REPORT.md) - Comprehensive test results
 - [📊 System Architecture](#-system-architecture) - Technical overview
 
