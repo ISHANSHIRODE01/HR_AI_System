@@ -16,33 +16,36 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from agents.rl_agent import RLAgent  # your RL class
-
-# --- Internal Automation Import ---
+from agents.rl_agent import RLAgent
 from agents.automation import trigger_event
+from config import CVS_PATH, JDS_PATH, FEEDBACK_LOG_PATH, SYSTEM_LOG_PATH, GOOGLE_AI_API_KEY, validate_data_files
 
 app = Flask(__name__)
 
-# --- File Paths ---
-CVS_PATH = "feedback/cvs.csv"
-JDS_PATH = "feedback/jds.csv"
-FEEDBACK_LOG_PATH = "feedback/feedback_log.csv"
-SYSTEM_LOG_PATH = "feedback/system_log.json"
-
 # --- Initialize RL Agent ---
 try:
-    AGENT = RLAgent(CVS_PATH, JDS_PATH)
+    validate_data_files()
+    AGENT = RLAgent(str(CVS_PATH), str(JDS_PATH))
     print("RL Agent initialized successfully.")
 except FileNotFoundError as e:
     print(f"Data error: {e}")
+    print("Please ensure all required CSV files exist in the feedback/ directory")
+    AGENT = None
+except Exception as e:
+    print(f"Initialization error: {e}")
     AGENT = None
 
 # --- Initialize Gemini Client ---
 try:
-    GEMINI_CLIENT = genai.Client()
-    print("Gemini Client initialized successfully.")
+    if GOOGLE_AI_API_KEY:
+        GEMINI_CLIENT = genai.Client(api_key=GOOGLE_AI_API_KEY)
+        print("Gemini Client initialized successfully.")
+    else:
+        print("No Google AI API key found. Gemini features disabled.")
+        GEMINI_CLIENT = None
 except Exception as e:
     print(f"Gemini Client Error: {e}")
+    print("Gemini features will be disabled. Set GOOGLE_AI_API_KEY to enable.")
     GEMINI_CLIENT = None
 
 
@@ -51,7 +54,7 @@ except Exception as e:
 # -----------------------------------------------------------
 def summarize_feedback_with_gemini(candidate_id, jd_id, comment, feedback_score):
     if not GEMINI_CLIENT:
-        return "Gemini client not initialized."
+        return f"Processed feedback with score {feedback_score}"
 
     prompt = f"""
     HR Feedback Summary Task:
@@ -71,9 +74,10 @@ def summarize_feedback_with_gemini(candidate_id, jd_id, comment, feedback_score)
                 temperature=0.3, max_output_tokens=150
             ),
         )
-        return (resp.text or "No summary").strip()
+        return (resp.text or f"Processed feedback with score {feedback_score}").strip()
     except (APIError, Exception) as e:
-        return f"Gemini Error: {e}"
+        print(f"Gemini API Error: {e}")
+        return f"Processed feedback with score {feedback_score} (Gemini unavailable)"
 
 
 # -----------------------------------------------------------

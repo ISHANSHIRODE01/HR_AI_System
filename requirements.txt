@@ -1,3 +1,4 @@
+# Core dependencies
 Flask==3.0.3
 pandas==2.2.2
 numpy==1.26.4
@@ -8,9 +9,13 @@ matplotlib==3.9.2
 joblib==1.4.2
 seaborn==0.13.2
 
---- Required for Streamlit Dashboard ---
+# Dashboard dependencies
 streamlit==1.37.0
 plotly==5.22.0
 
---- Required for Gemini LLM Integration in app.py ---
+# Optional AI integration
 google-genai==0.16.0
+
+# Development dependencies
+pytest==7.4.3
+pytest-cov==4.1.0

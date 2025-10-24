@@ -6,12 +6,7 @@ import pandas as pd
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agents.rl_agent import RLAgent
-
-# Define paths
-CVS_PATH = "feedback/cvs.csv"
-JDS_PATH = "feedback/jds.csv"
-FEEDBACKS_PATH = "feedback/feedbacks.csv"
-OUTPUT_DIR = "feedback"
+from config import CVS_PATH, JDS_PATH, FEEDBACKS_PATH, DATA_DIR, validate_data_files
 
 def main():
     """Main workflow for HR AI System"""
@@ -19,15 +14,20 @@ def main():
     
     # Initialize RL Agent
     try:
-        agent = RLAgent(CVS_PATH, JDS_PATH)
+        validate_data_files()
+        agent = RLAgent(str(CVS_PATH), str(JDS_PATH))
         print("RL Agent initialized successfully")
+    except FileNotFoundError as e:
+        print(f"Data files missing: {e}")
+        print("Please ensure all required CSV files exist in the feedback/ directory")
+        return
     except Exception as e:
         print(f"Error initializing RL Agent: {e}")
         return
     
     # Load and process feedback data
-    if os.path.exists(FEEDBACKS_PATH):
-        feedback_df = pd.read_csv(FEEDBACKS_PATH)
+    if FEEDBACKS_PATH.exists():
+        feedback_df = pd.read_csv(str(FEEDBACKS_PATH))
         print(f"Loaded {len(feedback_df)} feedback entries")
         
         # Process feedback through RL agent
@@ -40,8 +40,8 @@ def main():
         # Save results
         if agent.history:
             results_df = pd.DataFrame(agent.history)
-            output_file = os.path.join(OUTPUT_DIR, "agent_results.csv")
-            results_df.to_csv(output_file, index=False)
+            output_file = DATA_DIR / "agent_results.csv"
+            results_df.to_csv(str(output_file), index=False)
             print(f"Results saved to {output_file}")
             
         # Test decision making

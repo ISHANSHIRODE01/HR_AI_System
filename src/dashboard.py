@@ -12,12 +12,8 @@ import numpy as np
 # Ensure project root is in Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from agents.rl_agent import RLAgent  # Updated path
-
-# --- CONFIGURATION: CSV PATHS ---
-CVS_PATH = 'feedback/cvs.csv'
-JDS_PATH = 'feedback/jds.csv'
-FEEDBACKS_PATH = 'feedback/feedbacks.csv'
+from agents.rl_agent import RLAgent
+from config import CVS_PATH, JDS_PATH, FEEDBACKS_PATH, validate_data_files
 
 st.set_page_config(layout="wide", page_title="HR RL Agent Dashboard")
 
@@ -26,11 +22,9 @@ st.set_page_config(layout="wide", page_title="HR RL Agent Dashboard")
 def load_agent_and_feedback():
     """Load RLAgent, update Q-table from historical feedbacks, return agent and dataframe."""
     try:
-        if not all(os.path.exists(p) for p in [CVS_PATH, JDS_PATH, FEEDBACKS_PATH]):
-            raise FileNotFoundError("One or more CSV files are missing. Check paths.")
-
-        agent = RLAgent(CVS_PATH, JDS_PATH)
-        feedback_df = pd.read_csv(FEEDBACKS_PATH)
+        validate_data_files()
+        agent = RLAgent(str(CVS_PATH), str(JDS_PATH))
+        feedback_df = pd.read_csv(str(FEEDBACKS_PATH))
 
         # Ensure feedback_id exists for logging (optional)
         if 'feedback_id' not in feedback_df.columns:

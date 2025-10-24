@@ -307,10 +307,25 @@ Ensure these CSV files exist in the `feedback/` directory:
   1,1,1,4,"Strong technical background"
   ```
 
-### Optional Environment Variables
+### Environment Variables (Optional)
+Copy `.env.example` to `.env` and configure:
+
 ```env
 # For Gemini AI integration (optional)
 GOOGLE_AI_API_KEY=your_api_key_here
+
+# Flask settings
+FLASK_ENV=development
+FLASK_DEBUG=True
+
+# Streamlit settings
+STREAMLIT_SERVER_PORT=8501
+```
+
+**Setup:**
+```bash
+cp .env.example .env
+# Edit .env with your settings
 ```
 
 ---
