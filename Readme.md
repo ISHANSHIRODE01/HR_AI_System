@@ -38,17 +38,44 @@ This HR AI System uses **Q-learning reinforcement learning** to make intelligent
 # Clone the repository
 git clone https://github.com/ISHANSHIRODE01/Ishan_HR_AI_System.git
 cd Ishan_HR_AI_System
+```
 
-# Create virtual environment (recommended)
+### 2. Virtual Environment Setup
+
+**Option A: Automated Setup (Recommended)**
+```bash
+# Windows
+setup_venv.bat
+
+# Linux/macOS
+chmod +x setup_venv.sh
+./setup_venv.sh
+```
+
+**Option B: Manual Setup**
+```bash
+# Create virtual environment
 python -m venv venv
-venv\Scripts\activate  # Windows
-# source venv/bin/activate  # macOS/Linux
+
+# Activate virtual environment
+venv\Scripts\activate     # Windows
+source venv/bin/activate   # Linux/macOS
 
 # Install dependencies
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 2. Quick Launch
+### 3. Quick Launch
+
+**⚠️ Important: Activate virtual environment first!**
+```bash
+# Windows
+venv\Scripts\activate
+
+# Linux/macOS  
+source venv/bin/activate
+```
 
 **Option A: Automated Startup (Windows)**
 ```bash
@@ -73,14 +100,14 @@ scripts/start_flask.bat
 scripts/start_dashboard.bat
 ```
 
-### 3. Access Points
+### 4. Access Points
 - **Flask API**: http://localhost:5000
 - **Streamlit Dashboard**: http://localhost:8501 (may auto-switch to 8503)
 - **API Health Check**: http://localhost:5000/
 
 **Note**: If port 8501 is busy, Streamlit will automatically use 8503
 
-### 4. Usage Notes
+### 5. Usage Notes
 - **Correct Command**: Use `python src/app.py` (not `python app.py`)
 - **Gemini API Warning**: The Gemini Client error is expected and doesn't affect functionality
 - **Dashboard Port**: Streamlit may use port 8503 if 8501 is occupied
@@ -381,13 +408,17 @@ EPSILON = 0.1    # Exploration rate
 
 ### Common Issues & Solutions
 
-#### 1. **Import Errors**
+#### 1. **Import Errors / Module Not Found**
 ```bash
 # Ensure virtual environment is activated
-venv\Scripts\activate  # Windows
-source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate     # Windows
+source venv/bin/activate   # Linux/macOS
 
-# Reinstall dependencies
+# Verify activation (should show venv path)
+which python              # Linux/macOS
+where python              # Windows
+
+# Reinstall dependencies if needed
 pip install -r requirements.txt
 ```
 
@@ -421,8 +452,9 @@ python -c "import pandas as pd; print(pd.read_csv('feedback/cvs.csv').columns)"
 
 ### Verification Checklist
 - [ ] Python 3.8+ installed
-- [ ] Virtual environment activated
-- [ ] Dependencies installed
+- [ ] Virtual environment created: `python -m venv venv`
+- [ ] Virtual environment activated: `venv\Scripts\activate` (Windows) or `source venv/bin/activate` (Linux/macOS)
+- [ ] Dependencies installed: `pip install -r requirements.txt`
 - [ ] Data files present in `feedback/`
 - [ ] Tests passing: `python tests/simple_test.py`
 - [ ] Flask accessible: http://localhost:5000
@@ -550,6 +582,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ### Quick Links
 - [Installation Guide](#-quick-start)
+- [Virtual Environment Guide](VIRTUAL_ENV_GUIDE.md)
 - [Quick Start Guide](QUICK_START.md)
 - [Troubleshooting Guide](TROUBLESHOOTING.md)
 - [API Reference](#-api-reference)
