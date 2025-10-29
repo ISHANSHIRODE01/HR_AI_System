@@ -3,7 +3,7 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 
-# ---------- 1️⃣ CV–JD Similarity Heatmap ----------
+# ---------- 1. CV-JD Similarity Heatmap ----------
 def plot_similarity_heatmap(match_df):
     pivot = match_df.pivot(index="CV_ID", columns="JD_ID", values="similarity_score")
     plt.figure(figsize=(6, 4))
@@ -14,7 +14,7 @@ def plot_similarity_heatmap(match_df):
     plt.close()
 
 
-# ---------- 2️⃣ Sentiment Distribution ----------
+# ---------- 2. Sentiment Distribution ----------
 def plot_sentiment_distribution(sentiment_df):
     counts = sentiment_df["sentiment"].value_counts()
     plt.figure(figsize=(5, 4))
@@ -26,7 +26,7 @@ def plot_sentiment_distribution(sentiment_df):
     plt.close()
 
 
-# ---------- 3️⃣ RL Reward Trend (Mock Visualization) ----------
+# ---------- 3. RL Reward Trend (Mock Visualization) ----------
 def plot_rl_rewards(episodes=50):
     rewards = np.random.uniform(-1, 1, episodes).cumsum()
     plt.figure(figsize=(6, 4))
@@ -40,10 +40,10 @@ def plot_rl_rewards(episodes=50):
     plt.close()
 
 
-# ---------- 4️⃣ Combined Overview ----------
+# ---------- 4. Combined Overview ----------
 def generate_all_plots(match_df, sentiment_df):
-    print("📊 Generating visualizations...")
+    print("Generating visualizations...")
     plot_similarity_heatmap(match_df)
     plot_sentiment_distribution(sentiment_df)
     plot_rl_rewards()
-    print("✅ Charts saved in /data as PNG files.")
+    print("Charts saved in /data as PNG files.")

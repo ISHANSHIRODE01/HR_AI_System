@@ -1,6 +1,20 @@
 import os
 from pathlib import Path
 
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    # dotenv not installed, try manual .env loading
+    env_file = Path(__file__).parent / ".env"
+    if env_file.exists():
+        with open(env_file) as f:
+            for line in f:
+                if line.strip() and not line.startswith('#'):
+                    key, value = line.strip().split('=', 1)
+                    os.environ[key] = value.strip('"\'')
+
 # Project root directory
 PROJECT_ROOT = Path(__file__).parent.absolute()
 
@@ -17,8 +31,7 @@ MODELS_DIR = PROJECT_ROOT / "models"
 SENTIMENT_MODEL_PATH = MODELS_DIR / "sentiment_model.pkl"
 TFIDF_MODEL_PATH = MODELS_DIR / "tfidf_model.pkl"
 
-# Environment variables
-GOOGLE_AI_API_KEY = os.getenv("GOOGLE_AI_API_KEY")
+# Environment variables - Gemini integration removed for simplicity
 
 # Validation
 def validate_data_files():

@@ -46,7 +46,7 @@ def load_agent_and_feedback():
 AGENT, FEEDBACK_DF = load_agent_and_feedback()
 
 # --- PAGE TITLE ---
-st.title("🤖 HR RL Agent Transparency Dashboard")
+st.title("HR RL Agent Transparency Dashboard")
 
 # =========================
 # 1️⃣ Metrics & Status

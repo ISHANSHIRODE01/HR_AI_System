@@ -13,3 +13,8 @@
 {"timestamp": "2025-10-24 13:42:28", "event": "feedback_processed", "user_id": 1, "details": {"candidate_id": 1, "jd_id": 1, "feedback_score": 4, "comment": "Test feedback", "summary": "Processed feedback with score 4", "action": "accept"}}
 {"timestamp": "2025-10-24 14:03:56", "event": "feedback_received", "user_id": 1, "details": {"candidate_id": 1, "comment": "Test feedback", "feedback_score": 4, "jd_id": 1}}
 {"timestamp": "2025-10-24 14:03:56", "event": "feedback_processed", "user_id": 1, "details": {"candidate_id": 1, "jd_id": 1, "feedback_score": 4, "comment": "Test feedback", "summary": "Processed feedback with score 4", "action": "accept"}}
+{"timestamp": "2025-10-29 10:38:32", "event": "feedback_received", "user_id": 1, "details": {"candidate_id": 1, "comment": "Test feedback", "feedback_score": 4, "jd_id": 1}}
+{"timestamp": "2025-10-29 10:38:32", "event": "feedback_processed", "user_id": 1, "details": {"candidate_id": 1, "jd_id": 1, "feedback_score": 4, "comment": "Test feedback", "summary": "Positive feedback for candidate 1 - Score 4/5", "action": "accept"}}
+{"timestamp": "2025-10-29 10:40:20", "event": "feedback_received", "user_id": 1, "details": {"candidate_id": 1, "comment": "Test feedback", "feedback_score": 4, "jd_id": 1}}
+{"timestamp": "2025-10-29 10:40:20", "event": "feedback_processed", "user_id": 1, "details": {"candidate_id": 1, "jd_id": 1, "feedback_score": 4, "comment": "Test feedback", "summary": "Positive feedback for candidate 1 - Score 4/5", "action": "accept"}}
+{"timestamp": "2025-10-29 10:40:52", "event": "test_event", "user_id": 1, "details": {"test": "data"}}

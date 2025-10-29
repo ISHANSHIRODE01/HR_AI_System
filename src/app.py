@@ -1,28 +1,22 @@
-# -----------------------------------------------------------
-# Adaptive AI HR Brain v2 — Flask Backend (Self-Automation + Gemini)
-# -----------------------------------------------------------
+# HR AI System - Flask Backend (Simplified)
 from flask import Flask, request, jsonify
 import pandas as pd
 import os
 import json
 from datetime import datetime
 
-# --- NEW IMPORTS FOR GEMINI ---
-from google import genai
-from google.genai.errors import APIError
-
-# --- RL Agent Import ---
+# RL Agent Import
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agents.rl_agent import RLAgent
 from agents.automation import trigger_event
-from config import CVS_PATH, JDS_PATH, FEEDBACK_LOG_PATH, SYSTEM_LOG_PATH, GOOGLE_AI_API_KEY, validate_data_files
+from config import CVS_PATH, JDS_PATH, FEEDBACKS_PATH, FEEDBACK_LOG_PATH, SYSTEM_LOG_PATH, validate_data_files
 
 app = Flask(__name__)
 
-# --- Initialize RL Agent ---
+# Initialize RL Agent
 try:
     validate_data_files()
     AGENT = RLAgent(str(CVS_PATH), str(JDS_PATH))
@@ -35,56 +29,17 @@ except Exception as e:
     print(f"Initialization error: {e}")
     AGENT = None
 
-# --- Initialize Gemini Client ---
-try:
-    if GOOGLE_AI_API_KEY:
-        GEMINI_CLIENT = genai.Client(api_key=GOOGLE_AI_API_KEY)
-        print("Gemini Client initialized successfully.")
+def generate_simple_summary(candidate_id, jd_id, comment, feedback_score):
+    """Generate simple feedback summary without external AI"""
+    if feedback_score >= 4:
+        return f"Positive feedback for candidate {candidate_id} - Score {feedback_score}/5"
+    elif feedback_score <= 2:
+        return f"Negative feedback for candidate {candidate_id} - Score {feedback_score}/5"
     else:
-        print("No Google AI API key found. Gemini features disabled.")
-        GEMINI_CLIENT = None
-except Exception as e:
-    print(f"Gemini Client Error: {e}")
-    print("Gemini features will be disabled. Set GOOGLE_AI_API_KEY to enable.")
-    GEMINI_CLIENT = None
+        return f"Neutral feedback for candidate {candidate_id} - Score {feedback_score}/5"
 
-
-# -----------------------------------------------------------
-# Helper: Summarize Feedback using Gemini
-# -----------------------------------------------------------
-def summarize_feedback_with_gemini(candidate_id, jd_id, comment, feedback_score):
-    if not GEMINI_CLIENT:
-        return f"Processed feedback with score {feedback_score}"
-
-    prompt = f"""
-    HR Feedback Summary Task:
-    Candidate ID: {candidate_id}
-    Job ID: {jd_id}
-    Raw Comment: "{comment}"
-    Score (1=Bad, 5=Good): {feedback_score}
-
-    Summarize the reason for the score in <=15 words for an HR Slack channel.
-    """
-
-    try:
-        resp = GEMINI_CLIENT.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt,
-            config=genai.types.GenerateContentConfig(
-                temperature=0.3, max_output_tokens=150
-            ),
-        )
-        return (resp.text or f"Processed feedback with score {feedback_score}").strip()
-    except (APIError, Exception) as e:
-        print(f"Gemini API Error: {e}")
-        return f"Processed feedback with score {feedback_score} (Gemini unavailable)"
-
-
-# -----------------------------------------------------------
-# 🔁 Internal Automation Trigger
-# -----------------------------------------------------------
 def internal_automation(candidate_id, jd_id, feedback_score, comment, summary, action):
-    """Simulates event-driven automation instead of using N8N."""
+    """Internal automation trigger for event logging"""
     details = {
         "candidate_id": candidate_id,
         "jd_id": jd_id,
@@ -96,14 +51,46 @@ def internal_automation(candidate_id, jd_id, feedback_score, comment, summary, a
     trigger_event("feedback_processed", user_id=candidate_id, details=details)
     print(f"Automation Triggered - Candidate {candidate_id}, Policy: {action}")
 
-
-# -----------------------------------------------------------
-# Routes
-# -----------------------------------------------------------
 @app.route("/")
 def home():
-    return "HR RL Agent Backend Running (Self-Automation Enabled)"
+    status_info = {
+        "status": "HR RL Agent Backend Running",
+        "automation": "enabled",
+        "rl_agent": "initialized" if AGENT else "failed",
+        "timestamp": datetime.now().isoformat()
+    }
+    return jsonify(status_info)
 
+@app.route("/health")
+def health_check():
+    """System health check for troubleshooting"""
+    health_status = {
+        "system": "HR AI System",
+        "version": "2.0 Simplified",
+        "timestamp": datetime.now().isoformat(),
+        "components": {
+            "rl_agent": {
+                "status": "ok" if AGENT else "error",
+                "details": "Q-learning agent initialized" if AGENT else "Agent initialization failed"
+            },
+            "data_files": {
+                "status": "checking",
+                "cvs_exists": CVS_PATH.exists(),
+                "jds_exists": JDS_PATH.exists(),
+                "feedbacks_exists": FEEDBACKS_PATH.exists()
+            }
+        },
+        "recommendations": []
+    }
+    
+    # Add recommendations based on status
+    if not AGENT:
+        health_status["recommendations"].append("Check that all CSV files exist in feedback/ directory")
+    
+    # Overall health
+    health_status["overall"] = "healthy" if AGENT is not None else "degraded"
+    
+    return jsonify(health_status)
 
 @app.route("/update_feedback", methods=["POST"])
 def update_feedback():
@@ -115,23 +102,23 @@ def update_feedback():
     if not all(k in data for k in required_keys):
         return jsonify({"status": "error", "message": "Missing fields"}), 400
 
-    # --- Trigger Event: Feedback Received ---
+    # Trigger Event: Feedback Received
     trigger_event("feedback_received", user_id=data["candidate_id"], details=data)
 
-    # --- RL Update ---
+    # RL Update
     feedback_entry = pd.Series(data)
     AGENT.update_reward(feedback_entry)
 
-    # --- Gemini Summary ---
-    summary = summarize_feedback_with_gemini(
+    # Simple Summary (no external AI)
+    summary = generate_simple_summary(
         data["candidate_id"], data["jd_id"], data["comment"], data["feedback_score"]
     )
 
-    # --- New Policy Suggestion ---
+    # New Policy Suggestion
     s_tuple = AGENT.get_state(data["candidate_id"], data["jd_id"], data["comment"])
     policy_action = ["accept", "reject", "reconsider"][AGENT.choose_action(s_tuple)]
 
-    # --- Log Feedback ---
+    # Log Feedback
     try:
         df = pd.DataFrame(
             [
@@ -152,7 +139,7 @@ def update_feedback():
     except Exception as e:
         print(f"CSV log error: {e}")
 
-    # --- Internal Automation Trigger (replaces N8N) ---
+    # Internal Automation Trigger
     internal_automation(
         data["candidate_id"],
         data["jd_id"],
@@ -172,9 +159,5 @@ def update_feedback():
         }
     )
 
-
-# -----------------------------------------------------------
-# Run Flask App
-# -----------------------------------------------------------
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

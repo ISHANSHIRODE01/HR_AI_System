@@ -76,23 +76,16 @@ cd Ishan_HR_AI_System
 
 ### Step 3: Configure Environment Variables (Optional)
 
-**🔐 Important**: Never commit API keys to version control!
-
 ```bash
 # Copy environment template
 cp .env.example .env
 
-# Edit with your API keys (this file is git-ignored)
+# Edit configuration if needed (this file is git-ignored)
 # Windows: notepad .env
 # Linux/macOS: nano .env
 ```
 
-**Add your API key to .env:**
-```env
-GOOGLE_AI_API_KEY=your_actual_api_key_here
-```
-
-**📝 Note**: System works without API key (Gemini features disabled)
+**📝 Note**: Environment configuration is optional for basic functionality
 
 ### Step 4: Set Up Virtual Environment
 
@@ -295,11 +288,11 @@ ls src/  # Should show app.py, dashboard.py, main.py
 - Streamlit will auto-switch to port 8503
 - Or kill existing processes and restart
 
-### ❌ **Gemini API Warnings**
-**Cause**: No Google AI API key (this is normal)
+### ❌ **Unicode Encoding Issues**
+**Cause**: Special characters in terminal output
 **Solution**: 
-- Ignore the warning - system works without it
-- Or set `GOOGLE_AI_API_KEY` environment variable
+- Fixed in current simplified version
+- All Unicode characters removed from output
 
 ## ✅ **Installation Success Checklist**
 
@@ -542,15 +535,13 @@ nano .env
 
 **Example .env file:**
 ```env
-# For Gemini AI integration (optional)
-GOOGLE_AI_API_KEY=your_actual_api_key_here
-
 # Flask settings
 FLASK_ENV=development
 FLASK_DEBUG=True
+FLASK_PORT=5000
 
 # Streamlit settings
-STREAMLIT_SERVER_PORT=8501
+STREAMLIT_PORT=8501
 ```
 
 **🛡️ Security**: See [SECURITY.md](SECURITY.md) for security guidelines
@@ -645,10 +636,10 @@ python -c "import pandas as pd; print(pd.read_csv('feedback/cvs.csv').columns)"
 - Fixed in current version
 - All Unicode characters removed from print statements
 
-#### 5. **Gemini API Warnings**
-- Expected warning: "Missing key inputs argument" - this is normal
-- System works without Gemini API key
-- To use Gemini features, set `GOOGLE_AI_API_KEY` environment variable
+#### 5. **Simplified Version**
+- External AI integrations removed for simplicity
+- System uses built-in feedback summarization
+- No external API dependencies required
 
 ### Verification Checklist
 - [ ] Python 3.8+ installed
