@@ -1,56 +1,67 @@
-# Quick Start Guide - HR AI System
+# Quick Start Guide - HR AI System (Simplified)
 
-## 🚀 **Get Running in 5 Minutes**
+**Get your HR AI System running in 5 minutes!**
 
-### **Prerequisites**
+## Prerequisites
 - Python 3.8+ installed
-- Git installed
-- Terminal/Command prompt
+- Command line access
 
-### **Step 1: Download & Setup (2 minutes)**
+## Step 1: Download
 ```bash
-# Clone repository
 git clone https://github.com/ISHANSHIRODE01/Ishan_HR_AI_System.git
 cd Ishan_HR_AI_System
-
-# Automated setup (Windows)
-setup_venv.bat
-
-# Automated setup (Linux/macOS)
-chmod +x setup_venv.sh && ./setup_venv.sh
 ```
 
-### **Step 2: Verify Installation (1 minute)**
+## Step 2: Setup Environment
 ```bash
-# Test system (should show 6/6 tests passed)
+# Create virtual environment
+python -m venv venv
+
+# Activate it
+# Windows:
+venv\Scripts\activate
+# Linux/macOS:
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+## Step 3: Verify Installation
+```bash
 python tests/simple_test.py
+# Expected: "6/6 tests passed"
 ```
 
-### **Step 3: Start System (2 minutes)**
+## Step 4: Start System
 ```bash
-# Terminal 1: Start Flask Backend
+# Terminal 1 - Flask Backend
 python src/app.py
 
-# Terminal 2: Start Dashboard
+# Terminal 2 - Dashboard (new terminal, activate venv first)
 streamlit run src/dashboard.py
 ```
 
-### **Step 4: Access System**
+## Step 5: Access
 - **API**: http://localhost:5000
 - **Dashboard**: http://localhost:8501
 
-## ✅ **Success Indicators**
-- Flask shows: "Running on http://127.0.0.1:5000"
-- Dashboard opens in browser
-- Tests show: "6/6 tests passed"
-
-## 🔧 **If Something Goes Wrong**
+## Test API
 ```bash
-# Most common fix: Activate virtual environment
-venv\Scripts\activate     # Windows
-source venv/bin/activate  # Linux/macOS
-
-# Then retry the commands
+curl -X POST http://localhost:5000/update_feedback \
+  -H "Content-Type: application/json" \
+  -d '{"candidate_id": 1, "jd_id": 1, "feedback_score": 4, "comment": "Great candidate"}'
 ```
 
-**Need detailed help?** See [INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md)
+## Troubleshooting
+- **Import errors**: Ensure virtual environment is activated
+- **Port busy**: Streamlit will auto-switch to 8503
+- **Missing files**: All required CSV files are included
+
+## What's Different (Simplified Version)
+- ✅ No external API keys required
+- ✅ No Unicode encoding issues
+- ✅ Faster startup and response times
+- ✅ Self-contained system
+
+**That's it! Your HR AI System is ready to use.**
