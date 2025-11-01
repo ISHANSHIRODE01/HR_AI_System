@@ -1,0 +1,35 @@
+HR-AI Core System Setup Guide
+================================
+
+Prerequisites:
+- Python 3.8+
+- pip package manager
+
+Installation Steps:
+1. Clone/download the project
+2. Navigate to project directory
+3. Install dependencies: pip install -r requirements.txt
+4. Start API server: uvicorn app.main:app --reload
+5. Open new terminal and start dashboard: streamlit run dashboard/app.py
+
+Default URLs:
+- API: http://localhost:8000
+- API Docs: http://localhost:8000/docs
+- Dashboard: http://localhost:8501
+
+Testing the System:
+1. Open dashboard at http://localhost:8501
+2. Add a test candidate in "Candidates" tab
+3. Submit feedback in "Feedback" tab
+4. Trigger automation in "Automation" tab
+5. Monitor logs in "Overview" tab
+
+Configuration:
+- Candidate data: data/candidates.json
+- Reward logs: data/reward_log.csv
+- RL model parameters: app/core/rl_model.py
+
+Troubleshooting:
+- Port conflicts: Change ports in run commands
+- Module errors: Ensure all dependencies installed
+- Data errors: Check data/ directory exists and is writable
